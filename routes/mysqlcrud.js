@@ -20,16 +20,17 @@ var connection = mysql.createConnection({
 //   console.log('connected as id ' + connection.threadId);
 // });
 
-router.get('/list/:num?', function (req, res) {
-  num = req.params.num;
+router.get('/:start/:end', function (req, res) {
+  start = parseInt(req.params.start);
+  end = parseInt(req.params.end);
 
-  if (!num) {
-    num = 100;
-  } else {
-    num = parseInt(req.params.num);
-  }
+  // if (!num) {
+  //   num = 100;
+  // } else {
+  //   num = parseInt(req.params.num);
+  // }
 
-  connection.query('SELECT * FROM mysqlcrud limit 0,?', [num], function (err, rows, fields) {
+  connection.query('SELECT * FROM mysqlcrud where id between ? and ?', [start,end], function (err, rows, fields) {
     if (err) throw err;
     res.json(rows);
   });
